@@ -56,6 +56,7 @@ import java.util.concurrent.TimeUnit;
 public class HttpClient {
     private static OkHttpClient sOkHttpClient;
     private static Context sContext;
+    private static HashMap<String, List<Cookie>> sCookieStore = new HashMap<>();
     private static LogInterceptor sLogInterceptor;
 
     public static OkHttpClient getOkHttpClient() {
@@ -65,10 +66,11 @@ public class HttpClient {
                         NetworkUtils.getKnownServersStore(sContext));
                 final SSLSocketFactory sslSocketFactory = getNewSslSocketFactory(trustManager);
                 // Automatic cookie handling, NOT PERSISTENT
+                final CookieJar cookieJar = new CookieJarImpl(sCookieStore);
 
                 // TODO: Not verifying the hostname against certificate. ask owncloud security human if this is ok.
                 //.hostnameVerifier(new BrowserCompatHostnameVerifier());
-                sOkHttpClient = buildNewOkHttpClient(sslSocketFactory, trustManager);
+                sOkHttpClient = buildNewOkHttpClient(sslSocketFactory, trustManager, cookieJar);
 
             } catch (Exception e) {
                 Timber.e(e, "Could not setup SSL system.");
@@ -105,7 +107,8 @@ public class HttpClient {
         return sslContext.getSocketFactory();
     }
 
-    private static OkHttpClient buildNewOkHttpClient(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager){
+    private static OkHttpClient buildNewOkHttpClient(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager,
+                                                     CookieJar cookieJar) {
         return new OkHttpClient.Builder()
                 .addNetworkInterceptor(getLogInterceptor())
                 .protocols(Collections.singletonList(Protocol.HTTP_1_1))
@@ -115,6 +118,7 @@ public class HttpClient {
                 .followRedirects(false)
                 .sslSocketFactory(sslSocketFactory, trustManager)
                 .hostnameVerifier((asdf, usdf) -> true)
+                .cookieJar(cookieJar)
                 .build();
     }
 
