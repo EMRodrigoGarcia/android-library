@@ -26,6 +26,7 @@ package com.owncloud.android.lib.common.http;
 
 import android.content.Context;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.owncloud.android.lib.common.network.AdvancedX509TrustManager;
 import com.owncloud.android.lib.common.network.NetworkUtils;
 import okhttp3.Cookie;
@@ -111,6 +112,7 @@ public class HttpClient {
                                                      CookieJar cookieJar) {
         return new OkHttpClient.Builder()
                 .addNetworkInterceptor(getLogInterceptor())
+                .addNetworkInterceptor(new StethoInterceptor())
                 .protocols(Collections.singletonList(Protocol.HTTP_1_1))
                 .readTimeout(HttpConstants.DEFAULT_DATA_TIMEOUT, TimeUnit.MILLISECONDS)
                 .writeTimeout(HttpConstants.DEFAULT_DATA_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -135,5 +137,9 @@ public class HttpClient {
 
     public static void setContext(Context context) {
         sContext = context;
+    }
+
+    public void clearCookies() {
+        sCookieStore.clear();
     }
 }
