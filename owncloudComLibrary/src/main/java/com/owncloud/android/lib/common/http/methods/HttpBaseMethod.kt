@@ -17,6 +17,7 @@ abstract class HttpBaseMethod constructor(url: URL) {
     var okHttpClient: OkHttpClient
     var httpUrl: HttpUrl = url.toHttpUrlOrNull() ?: throw MalformedURLException()
     var request: Request
+    private var _followPermanentRedirects = false
     abstract var response: Response
 
     var call: Call? = null
@@ -99,6 +100,11 @@ abstract class HttpBaseMethod constructor(url: URL) {
         return response.body?.byteStream()
     }
 
+    /**
+     * returns the final url after following the last redirect.
+     */
+    open fun getFinalUrl() = response.request.url
+
     /*************************
      *** Connection Params ***
      *************************/
@@ -133,6 +139,15 @@ abstract class HttpBaseMethod constructor(url: URL) {
             .followRedirects(followRedirects)
             .build()
     }
+
+    open fun getFollowRedirects() = okHttpClient.followRedirects
+
+    open fun setFollPermanentRedirects(followRedirects: Boolean) {
+        _followPermanentRedirects = followRedirects
+    }
+
+    open fun getFollowPermanentRedirects() = _followPermanentRedirects
+
 
     /************
      *** Call ***
