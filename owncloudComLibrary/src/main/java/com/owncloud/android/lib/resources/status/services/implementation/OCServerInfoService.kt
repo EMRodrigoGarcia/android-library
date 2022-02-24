@@ -35,7 +35,7 @@ class OCServerInfoService : ServerInfoService {
     ): RemoteOperationResult<Boolean> =
         CheckPathExistenceRemoteOperation(
             remotePath = path,
-            isUserLogged = true
+            isUserLoggedIn = true
         ).execute(client)
 
     override fun getRemoteStatus(
