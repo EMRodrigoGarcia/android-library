@@ -21,26 +21,17 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeducamadrid.lib.sampleclient;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+package com.educamadrid.cloudeducamadrid.lib.resources.users.services
 
-import com.educamadrid.cloudeducamadrid.lib.resources.files.RemoteFile;
+import com.educamadrid.cloudeducamadrid.lib.common.operations.RemoteOperationResult
+import com.educamadrid.cloudeducamadrid.lib.resources.Service
+import com.educamadrid.cloudeducamadrid.lib.resources.users.GetRemoteUserQuotaOperation
+import com.educamadrid.cloudeducamadrid.lib.resources.users.RemoteAvatarData
+import com.educamadrid.cloudeducamadrid.lib.resources.users.RemoteUserInfo
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
-    }
+interface UserService : Service {
+    fun getUserInfo(): RemoteOperationResult<RemoteUserInfo>
+    fun getUserQuota(): RemoteOperationResult<GetRemoteUserQuotaOperation.RemoteQuota>
+    fun getUserAvatar(avatarDimension: Int): RemoteOperationResult<RemoteAvatarData>
 }
-

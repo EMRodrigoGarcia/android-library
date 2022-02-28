@@ -1,4 +1,5 @@
 /* ownCloud Android Library is available under MIT license
+ *
  *   Copyright (C) 2020 ownCloud GmbH.
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,28 +20,33 @@
  *   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
- *
  */
-package com.educamadrid.cloudeducamadrid.lib.sampleclient;
+package com.educamadrid.cloudeducamadrid.lib.resources
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-import com.educamadrid.cloudeducamadrid.lib.resources.files.RemoteFile;
+// Response retrieved by OCS Rest API, used to obtain capabilities, shares and user info among others.
+// More info: https://doc.owncloud.com/server/developer_manual/core/apis/ocs-capabilities.html
+@JsonClass(generateAdapter = true)
+data class CommonOcsResponse<T>(
+    val ocs: OCSResponse<T>
+)
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+@JsonClass(generateAdapter = true)
+data class OCSResponse<T>(
+    val meta: MetaData,
+    val data: T
+)
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
-    }
-}
-
+@JsonClass(generateAdapter = true)
+data class MetaData(
+    val status: String,
+    @Json(name = "statuscode")
+    val statusCode: Int,
+    val message: String?,
+    @Json(name = "itemsperpage")
+    val itemsPerPage: String?,
+    @Json(name = "totalitems")
+    val totalItems: String?
+)

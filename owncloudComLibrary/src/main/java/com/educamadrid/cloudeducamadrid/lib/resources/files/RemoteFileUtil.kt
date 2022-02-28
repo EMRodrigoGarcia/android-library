@@ -21,26 +21,29 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeducamadrid.lib.sampleclient;
+package com.educamadrid.cloudeducamadrid.lib.resources.files
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.net.Uri
+import com.educamadrid.cloudeducamadrid.lib.common.OwnCloudClient
+import okhttp3.HttpUrl
 
-import com.educamadrid.cloudeducamadrid.lib.resources.files.RemoteFile;
-
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+class RemoteFileUtil {
+    companion object {
+        /**
+         * Retrieves a relative path from a remote file url
+         *
+         *
+         * Example: url:port/remote.php/dav/files/username/Documents/text.txt => /Documents/text.txt
+         *
+         * @param url    remote file url
+         * @param userId file owner
+         * @return remote relative path of the file
+         */
+        fun getRemotePathFromUrl(url: HttpUrl, userId: String): String? {
+            val davFilesPath = OwnCloudClient.WEBDAV_FILES_PATH_4_0 + userId
+            val absoluteDavPath = Uri.decode(url.encodedPath)
+            val pathToOc = absoluteDavPath.split(davFilesPath)[0]
+            return absoluteDavPath.replace(pathToOc + davFilesPath, "")
+        }
     }
 }
-

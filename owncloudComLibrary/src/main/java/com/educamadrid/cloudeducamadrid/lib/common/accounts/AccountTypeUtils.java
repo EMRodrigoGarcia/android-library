@@ -21,26 +21,24 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeducamadrid.lib.sampleclient;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+package com.educamadrid.cloudeducamadrid.lib.common.accounts;
 
-import com.educamadrid.cloudeducamadrid.lib.resources.files.RemoteFile;
+/**
+ * @author masensio
+ * @author David A. Velasco
+ */
+public class AccountTypeUtils {
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
+    public static String getAuthTokenTypePass(String accountType) {
+        return accountType + ".password";
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+    public static String getAuthTokenTypeAccessToken(String accountType) {
+        return accountType + ".oauth2.access_token";
+    }
+
+    public static String getAuthTokenTypeRefreshToken(String accountType) {
+        return accountType + ".oauth2.refresh_token";
     }
 }
-

@@ -21,26 +21,36 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeducamadrid.lib.sampleclient;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+package com.educamadrid.cloudeducamadrid.lib.resources.files;
 
-import com.educamadrid.cloudeducamadrid.lib.resources.files.RemoteFile;
+import timber.log.Timber;
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+import java.io.File;
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
+public class FileUtils {
+    public static final String FINAL_CHUNKS_FILE = ".file";
+    public static final String MIME_DIR = "DIR";
+    public static final String MIME_DIR_UNIX = "httpd/unix-directory";
+
+    static String getParentPath(String remotePath) {
+        String parentPath = new File(remotePath).getParent();
+        parentPath = parentPath.endsWith(File.separator) ? parentPath : parentPath + File.separator;
+        return parentPath;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+    /**
+     * Validate the fileName to detect if contains any forbidden character: / , \ , < , > ,
+     * : , " , | , ? , *
+     *
+     */
+    public static boolean isValidName(String fileName) {
+        boolean result = true;
+
+        Timber.d("fileName =======%s", fileName);
+        if (fileName.contains(File.separator)) {
+            result = false;
+        }
+        return result;
     }
 }
-

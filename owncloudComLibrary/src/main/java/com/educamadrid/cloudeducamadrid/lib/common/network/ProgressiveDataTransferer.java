@@ -1,5 +1,5 @@
 /* ownCloud Android Library is available under MIT license
- *   Copyright (C) 2020 ownCloud GmbH.
+ *   Copyright (C) 2016 ownCloud GmbH.
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,26 +21,17 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeducamadrid.lib.sampleclient;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+package com.educamadrid.cloudeducamadrid.lib.common.network;
 
-import com.educamadrid.cloudeducamadrid.lib.resources.files.RemoteFile;
+import java.util.Collection;
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+public interface ProgressiveDataTransferer {
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
+    void addDatatransferProgressListener(OnDatatransferProgressListener listener);
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
-    }
+    void addDatatransferProgressListeners(Collection<OnDatatransferProgressListener> listeners);
+
+    void removeDatatransferProgressListener(OnDatatransferProgressListener listener);
+
 }
-

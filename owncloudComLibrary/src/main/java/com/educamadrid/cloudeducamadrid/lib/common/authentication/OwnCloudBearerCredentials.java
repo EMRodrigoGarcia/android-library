@@ -21,26 +21,43 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeducamadrid.lib.sampleclient;
+package com.educamadrid.cloudeducamadrid.lib.common.authentication;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import com.educamadrid.cloudeducamadrid.lib.common.http.HttpConstants;
 
-import com.educamadrid.cloudeducamadrid.lib.resources.files.RemoteFile;
+public class OwnCloudBearerCredentials implements OwnCloudCredentials {
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+    private String mUsername;
+    private String mAccessToken;
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
+    public OwnCloudBearerCredentials(String username, String accessToken) {
+        mUsername = username != null ? username : "";
+        mAccessToken = accessToken != null ? accessToken : "";
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+    @Override
+    public String getUsername() {
+        // not relevant for authentication, but relevant for informational purposes
+        return mUsername;
+    }
+
+    @Override
+    public String getAuthToken() {
+        return mAccessToken;
+    }
+
+    @Override
+    public String getHeaderAuth() {
+        return HttpConstants.BEARER_AUTHORIZATION_KEY + mAccessToken;
+    }
+
+    @Override
+    public boolean authTokenExpires() {
+        return true;
+    }
+
+    @Override
+    public boolean authTokenCanBeRefreshed() {
+        return true;
     }
 }
-

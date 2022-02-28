@@ -21,26 +21,30 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeducamadrid.lib.sampleclient;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+package com.educamadrid.cloudeducamadrid.lib.resources.files.chunks;
 
-import com.educamadrid.cloudeducamadrid.lib.resources.files.RemoteFile;
+import com.educamadrid.cloudeducamadrid.lib.resources.files.MoveRemoteFileOperation;
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+/**
+ * Remote operation to move the file built from chunks after uploading it
+ *
+ * @author David González Verdugo
+ */
+public class MoveRemoteChunksFileOperation extends MoveRemoteFileOperation {
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+    /**
+     * Constructor.
+     *
+     * @param srcRemotePath    Remote path of the file/folder to move.
+     * @param targetRemotePath Remove path desired for the file/folder after moving it.
+     * @param overwrite
+     */
+    public MoveRemoteChunksFileOperation(String srcRemotePath, String targetRemotePath, boolean overwrite,
+                                         String fileLastModifTimestamp, long fileLength) {
+        super(srcRemotePath, targetRemotePath, overwrite);
+        moveChunkedFile = true;
+        mFileLastModifTimestamp = fileLastModifTimestamp;
+        mFileLength = fileLength;
     }
 }
-
