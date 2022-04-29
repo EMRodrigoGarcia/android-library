@@ -21,26 +21,32 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+package com.educamadrid.cloudeduca.lib.common.http.methods.webdav
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import okhttp3.Response
+import java.net.URL
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
-
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
+/**
+ * Move calls wrapper
+ *
+ * @author Christian Schabesberger
+ * @author David González Verdugo
+ */
+class MoveMethod(
+    url: URL,
+    private val destinationUrl: String,
+    private val forceOverride: Boolean
+) : DavMethod(url) {
+    @Throws(Exception::class)
+    public override fun onExecute(): Int {
+        davResource.move(
+            destinationUrl,
+            forceOverride,
+            super.getRequestHeadersAsHashMap()
+        ) { callBackResponse: Response ->
+            response = callBackResponse
+        }
+        return super.statusCode
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
-    }
 }
-

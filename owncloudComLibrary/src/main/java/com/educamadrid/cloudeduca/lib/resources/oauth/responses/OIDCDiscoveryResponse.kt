@@ -1,4 +1,7 @@
 /* ownCloud Android Library is available under MIT license
+ *
+ *   @author Abel García de Prada
+ *
  *   Copyright (C) 2020 ownCloud GmbH.
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,26 +24,20 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+package com.educamadrid.cloudeduca.lib.resources.oauth.responses
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import com.squareup.moshi.JsonClass
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
-
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
-    }
-}
-
+@JsonClass(generateAdapter = true)
+data class OIDCDiscoveryResponse(
+    val authorization_endpoint: String,
+    val check_session_iframe: String?,
+    val end_session_endpoint: String?,
+    val issuer: String,
+    val registration_endpoint: String?,
+    val response_types_supported: List<String>,
+    val scopes_supported: List<String>?,
+    val token_endpoint: String,
+    val token_endpoint_auth_methods_supported: List<String>?,
+    val userinfo_endpoint: String?,
+)

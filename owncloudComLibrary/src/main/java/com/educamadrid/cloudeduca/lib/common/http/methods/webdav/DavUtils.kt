@@ -21,26 +21,16 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+package com.educamadrid.cloudeduca.lib.common.http.methods.webdav
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import at.bitfire.dav4jvm.Property
+import at.bitfire.dav4jvm.PropertyUtils.getAllPropSet
+import at.bitfire.dav4jvm.PropertyUtils.getQuotaPropset
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
+object DavUtils {
+    @JvmStatic val allPropset: Array<Property.Name>
+        get() = getAllPropSet()
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
-    }
+    val quotaPropSet: Array<Property.Name>
+        get() = getQuotaPropset()
 }
-

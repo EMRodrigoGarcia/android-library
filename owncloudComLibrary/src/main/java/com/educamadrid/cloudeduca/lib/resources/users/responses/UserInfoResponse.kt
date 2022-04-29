@@ -1,4 +1,5 @@
 /* ownCloud Android Library is available under MIT license
+ *
  *   Copyright (C) 2020 ownCloud GmbH.
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,28 +20,23 @@
  *   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
- *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+package com.educamadrid.cloudeduca.lib.resources.users.responses
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import com.educamadrid.cloudeduca.lib.resources.users.RemoteUserInfo
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
-
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
-    }
+@JsonClass(generateAdapter = true)
+data class UserInfoResponse(
+    val id: String,
+    @Json(name = "display-name")
+    val displayName: String,
+    val email: String?
+) {
+    fun toRemoteUserInfo() = RemoteUserInfo(
+        id = id,
+        displayName = displayName,
+        email = email
+    )
 }
-

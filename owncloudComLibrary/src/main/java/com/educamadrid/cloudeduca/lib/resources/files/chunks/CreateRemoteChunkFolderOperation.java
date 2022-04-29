@@ -21,26 +21,25 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+package com.educamadrid.cloudeduca.lib.resources.files.chunks;
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
+import com.educamadrid.cloudeduca.lib.resources.files.CreateRemoteFolderOperation;
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+/**
+ * Remote operation performing the creation of a new folder to save chunks during an upload to the ownCloud server.
+ *
+ * @author David González Verdugo
+ */
+public class CreateRemoteChunkFolderOperation extends CreateRemoteFolderOperation {
+    /**
+     * Constructor
+     *
+     * @param remotePath     Full path to the new directory to create in the remote server.
+     * @param createFullPath 'True' means that all the ancestor folders should be created.
+     */
+    public CreateRemoteChunkFolderOperation(String remotePath, boolean createFullPath) {
+        super(remotePath, createFullPath);
+        createChunksFolder = true;
     }
 }
-

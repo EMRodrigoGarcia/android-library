@@ -21,26 +21,44 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+package com.educamadrid.cloudeduca.lib.common.authentication;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import okhttp3.Credentials;
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+public class OwnCloudBasicCredentials implements OwnCloudCredentials {
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
+    private String mUsername;
+    private String mPassword;
+
+    public OwnCloudBasicCredentials(String username, String password) {
+        mUsername = username != null ? username : "";
+        mPassword = password != null ? password : "";
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+    @Override
+    public String getUsername() {
+        return mUsername;
+    }
+
+    @Override
+    public String getAuthToken() {
+        return mPassword;
+    }
+
+    @Override
+    public String getHeaderAuth() {
+        return Credentials.basic(mUsername, mPassword, UTF_8);
+    }
+
+    @Override
+    public boolean authTokenExpires() {
+        return false;
+    }
+
+    @Override
+    public boolean authTokenCanBeRefreshed() {
+        return false;
     }
 }
-

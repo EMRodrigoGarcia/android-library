@@ -1,4 +1,5 @@
 /* ownCloud Android Library is available under MIT license
+ *   @author David González Verdugo
  *   Copyright (C) 2020 ownCloud GmbH.
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,26 +22,20 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+package com.educamadrid.cloudeduca.lib.resources.files.chunks;
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
+import com.educamadrid.cloudeduca.lib.resources.files.RemoveRemoteFileOperation;
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+public class RemoveRemoteChunksFolderOperation extends RemoveRemoteFileOperation {
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+    /**
+     * Constructor
+     *
+     * @param remotePath RemotePath of the remote file or folder to remove from the server
+     */
+    public RemoveRemoteChunksFolderOperation(String remotePath) {
+        super(remotePath);
+        removeChunksFolder = true;
     }
 }
-

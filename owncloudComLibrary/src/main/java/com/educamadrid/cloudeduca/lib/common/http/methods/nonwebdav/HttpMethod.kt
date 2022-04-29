@@ -21,26 +21,26 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+package com.educamadrid.cloudeduca.lib.common.http.methods.nonwebdav
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import com.educamadrid.cloudeduca.lib.common.http.methods.HttpBaseMethod
+import okhttp3.Response
+import java.net.URL
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
+/**
+ * Wrapper to perform OkHttp calls
+ *
+ * @author David González Verdugo
+ */
+abstract class HttpMethod(
+    url: URL
+) : HttpBaseMethod(url) {
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+    override lateinit var response: Response
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+    public override fun onExecute(): Int {
+        call = okHttpClient.newCall(request)
+        call?.let { response = it.execute() }
+        return super.statusCode
     }
 }
-

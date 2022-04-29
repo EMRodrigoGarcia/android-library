@@ -1,5 +1,6 @@
 /* ownCloud Android Library is available under MIT license
- *   Copyright (C) 2020 ownCloud GmbH.
+ *
+ *   Copyright (C) 2021 ownCloud GmbH.
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -19,28 +20,28 @@
  *   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  *   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
- *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+package com.educamadrid.cloudeduca.lib.resources.oauth.services
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import com.educamadrid.cloudeduca.lib.common.OwnCloudClient
+import com.educamadrid.cloudeduca.lib.common.operations.RemoteOperationResult
+import com.educamadrid.cloudeduca.lib.resources.oauth.params.ClientRegistrationParams
+import com.educamadrid.cloudeduca.lib.resources.oauth.params.TokenRequestParams
+import com.educamadrid.cloudeduca.lib.resources.oauth.responses.ClientRegistrationResponse
+import com.educamadrid.cloudeduca.lib.resources.oauth.responses.OIDCDiscoveryResponse
+import com.educamadrid.cloudeduca.lib.resources.oauth.responses.TokenResponse
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
+interface OIDCService {
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+    fun getOIDCServerDiscovery(ownCloudClient: OwnCloudClient): RemoteOperationResult<OIDCDiscoveryResponse>
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
+    fun performTokenRequest(
+        ownCloudClient: OwnCloudClient,
+        tokenRequest: TokenRequestParams
+    ): RemoteOperationResult<TokenResponse>
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
-    }
+    fun registerClientWithRegistrationEndpoint(
+        ownCloudClient: OwnCloudClient,
+        clientRegistrationParams: ClientRegistrationParams
+    ): RemoteOperationResult<ClientRegistrationResponse>
 }
-

@@ -21,26 +21,14 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+package com.educamadrid.cloudeduca.lib.resources.status.services
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import com.educamadrid.cloudeduca.lib.common.OwnCloudClient
+import com.educamadrid.cloudeduca.lib.common.operations.RemoteOperationResult
+import com.educamadrid.cloudeduca.lib.resources.status.RemoteServerInfo
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
+interface ServerInfoService {
+    fun checkPathExistence(path: String, isUserLogged: Boolean, client: OwnCloudClient): RemoteOperationResult<Boolean>
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
-    }
+    fun getRemoteStatus(path: String, client: OwnCloudClient): RemoteOperationResult<RemoteServerInfo>
 }
-

@@ -21,26 +21,38 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+
+package com.educamadrid.cloudeduca.lib.common;
 
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.net.Uri;
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
+import com.educamadrid.cloudeduca.lib.common.http.HttpClient;
+import com.educamadrid.cloudeduca.lib.resources.status.GetRemoteStatusOperation;
 
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
+public class OwnCloudClientFactory {
 
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
+    /**
+     * Creates a OwnCloudClient to access a URL and sets the desired parameters for ownCloud
+     * client connections.
+     *
+     * @param uri     URL to the ownCloud server; BASE ENTRY POINT, not WebDavPATH
+     * @param context Android context where the OwnCloudClient is being created.
+     * @return A OwnCloudClient object ready to be used
+     */
+    public static OwnCloudClient createOwnCloudClient(Uri uri, Context context, boolean followRedirects) {
+        OwnCloudClient client = new OwnCloudClient(uri);
+
+        client.setFollowRedirects(followRedirects);
+
+        HttpClient.setContext(context);
+        retrieveCookiesFromMiddleware(client);
+
+        return client;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+    private static void retrieveCookiesFromMiddleware(OwnCloudClient client) {
+        final GetRemoteStatusOperation statusOperation = new GetRemoteStatusOperation();
+        statusOperation.run(client);
     }
 }
-

@@ -21,26 +21,32 @@
  *   THE SOFTWARE.
  *
  */
-package com.educamadrid.cloudeduca.lib.sampleclient;
+package com.educamadrid.cloudeduca.lib.common.http.methods.webdav
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import at.bitfire.dav4jvm.exception.HttpException
+import com.educamadrid.cloudeduca.lib.common.http.HttpConstants
+import okhttp3.RequestBody
+import java.io.IOException
+import java.net.URL
 
-import com.educamadrid.cloudeduca.lib.resources.files.RemoteFile;
-
-public class FilesArrayAdapter extends ArrayAdapter<RemoteFile> {
-
-    public FilesArrayAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView = (TextView) super.getView(position, convertView, parent);
-        textView.setText(getItem(position).getRemotePath());
-        return textView;
+/**
+ * Put calls wrapper
+ *
+ * @author David González Verdugo
+ */
+class PutMethod(
+    url: URL,
+    private val putRequestBody: RequestBody
+) : DavMethod(url) {
+    @Throws(IOException::class, HttpException::class)
+    public override fun onExecute(): Int {
+        davResource.put(
+            putRequestBody,
+            super.getRequestHeader(HttpConstants.IF_MATCH_HEADER),
+            getRequestHeadersAsHashMap()
+        ) { callBackResponse ->
+            response = callBackResponse
+        }
+        return super.statusCode
     }
 }
-

@@ -23,7 +23,7 @@
 
  -->
 
-<manifest package="com.educamadrid.cloudeducamadrid.lib"
+<manifest package="com.educamadrid.cloudeduca.lib"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- USE_CREDENTIALS, MANAGE_ACCOUNTS and AUTHENTICATE_ACCOUNTS are needed for API < 23.
